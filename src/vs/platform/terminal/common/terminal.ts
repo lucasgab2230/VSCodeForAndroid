@@ -677,6 +677,19 @@ export interface IShellLaunchConfig {
 	sandboxSettings?: SandboxRuntimeConfig;
 }
 
+export interface ISandboxTerminalSettings {
+	enabled?: boolean;
+	Network?: {
+		allowedHosts?: string[];
+		deniedHosts?: string[];
+	};
+	Filesystem?: {
+		denyRead?: string[];
+		allowWrite?: string[];
+		denyWrite?: string[];
+	};
+}
+
 
 export interface ITerminalTabAction {
 	id: string;

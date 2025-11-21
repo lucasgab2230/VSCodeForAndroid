@@ -20,7 +20,7 @@ import { IConfigurationService } from '../../../../../../platform/configuration/
 import { IInstantiationService, type ServicesAccessor } from '../../../../../../platform/instantiation/common/instantiation.js';
 import { IStorageService, StorageScope, StorageTarget } from '../../../../../../platform/storage/common/storage.js';
 import { TerminalCapability } from '../../../../../../platform/terminal/common/capabilities/capabilities.js';
-import { IShellLaunchConfig, ITerminalLogService, ITerminalProfile } from '../../../../../../platform/terminal/common/terminal.js';
+import { ISandboxTerminalSettings, IShellLaunchConfig, ITerminalLogService, ITerminalProfile } from '../../../../../../platform/terminal/common/terminal.js';
 import { IRemoteAgentService } from '../../../../../services/remote/common/remoteAgentService.js';
 import { TerminalToolConfirmationStorageKeys } from '../../../../chat/browser/chatContentParts/toolInvocationParts/chatTerminalToolConfirmationSubPart.js';
 import { IChatService, type IChatTerminalToolInvocationData } from '../../../../chat/common/chatService.js';
@@ -399,6 +399,15 @@ export class RunInTerminalTool extends Disposable implements IToolImpl {
 			};
 		}
 
+		const isSandboxingEnabled = this._configurationService.getValue<ISandboxTerminalSettings>(TerminalChatAgentToolsSettingId.TerminalSandbox)?.enabled === true;
+		if (isSandboxingEnabled) {
+			this._logService.info(`RunInTerminalTool: Sandboxing is enabled for terminal tool commands`);
+			return {
+				toolSpecificData
+			};
+		}
+
+
 		// Determine auto approval, this happens even when auto approve is off to that reasoning
 		// can be reviewed in the terminal channel. It also allows gauging the effective set of
 		// commands that would be auto approved if it were enabled.
@@ -407,7 +416,7 @@ export class RunInTerminalTool extends Disposable implements IToolImpl {
 		const isEligibleForAutoApproval = this._configurationService.getValue<Record<string, boolean>>(ChatConfiguration.EligibleForAutoApproval)?.[TOOL_REFERENCE_NAME] ?? true;
 		const isAutoApproveEnabled = this._configurationService.getValue(TerminalChatAgentToolsSettingId.EnableAutoApprove) === true;
 		const isAutoApproveWarningAccepted = this._storageService.getBoolean(TerminalToolConfirmationStorageKeys.TerminalAutoApproveWarningAccepted, StorageScope.APPLICATION, false);
-		const isAutoApproveAllowed = isEligibleForAutoApproval && isAutoApproveEnabled && isAutoApproveWarningAccepted;
+		const isAutoApproveAllowed = (isEligibleForAutoApproval && isAutoApproveEnabled && isAutoApproveWarningAccepted)
 
 		const commandLineAnalyzerOptions: ICommandLineAnalyzerOptions = {
 			commandLine,
@@ -727,18 +736,7 @@ export class RunInTerminalTool extends Disposable implements IToolImpl {
 	}
 
 	private _handleTerminalSandboxing(shellLaunchConfig: IShellLaunchConfig) {
-		const settings = this._configurationService.getValue<{
-			enabled?: boolean;
-			Network?: {
-				allowedHosts?: string[];
-				deniedHosts?: string[];
-			};
-			Filesystem?: {
-				denyRead?: string[];
-				allowWrite?: string[];
-				denyWrite?: string[];
-			};
-		}>(TerminalChatAgentToolsSettingId.TerminalSandbox);
+		const settings = this._configurationService.getValue<ISandboxTerminalSettings>(TerminalChatAgentToolsSettingId.TerminalSandbox);
 
 		if (settings?.enabled) {
 			shellLaunchConfig.sandboxed = true;
