@@ -415,7 +415,9 @@ export class MainThreadTerminalService extends Disposable implements MainThreadT
 			cwd: terminalInstance.shellLaunchConfig.cwd,
 			env: terminalInstance.shellLaunchConfig.env,
 			hideFromUser: terminalInstance.shellLaunchConfig.hideFromUser,
-			tabActions: terminalInstance.shellLaunchConfig.tabActions
+			tabActions: terminalInstance.shellLaunchConfig.tabActions,
+			sandboxed: terminalInstance.shellLaunchConfig.sandboxed ?? false,
+			sandboxSettings: terminalInstance.shellLaunchConfig.sandboxSettings
 		};
 		this._proxy.$acceptTerminalOpened(terminalInstance.instanceId, extHostTerminalId, terminalInstance.title, shellLaunchConfigDto);
 	}

@@ -192,6 +192,8 @@ class RemoteTerminalBackend extends BaseTerminalBackend implements ITerminalBack
 			isFeatureTerminal: shellLaunchConfig.isFeatureTerminal,
 			tabActions: shellLaunchConfig.tabActions,
 			shellIntegrationEnvironmentReporting: shellLaunchConfig.shellIntegrationEnvironmentReporting,
+			sandboxed: shellLaunchConfig.sandboxed ?? false,
+			sandboxSettings: shellLaunchConfig.sandboxSettings
 		};
 		const activeWorkspaceRootUri = this._historyService.getLastActiveWorkspaceRoot();
 
