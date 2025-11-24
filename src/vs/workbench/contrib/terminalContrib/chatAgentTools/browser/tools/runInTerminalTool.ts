@@ -411,7 +411,6 @@ export class RunInTerminalTool extends Disposable implements IToolImpl {
 			};
 		}
 
-
 		// Determine auto approval, this happens even when auto approve is off to that reasoning
 		// can be reviewed in the terminal channel. It also allows gauging the effective set of
 		// commands that would be auto approved if it were enabled.
@@ -675,6 +674,11 @@ export class RunInTerminalTool extends Disposable implements IToolImpl {
 					resultArr.push(executeResult.additionalInformation);
 				}
 				terminalResult = resultArr.join('\n\n');
+
+				//if sandboxed and there is error, show the command uri to sandbox settings
+				if (exitCode !== 0 && this._isSandBoxedTerminal()) {
+					toolResultMessage = 'Failure may be due to terminal sandboxing. Update the [terminal sandbox settings](command:workbench.action.openSettings?%5B%22chat.tools.terminal.terminalSandbox%22%5D) to run in non sandboxed mode.';
+				}
 
 			} catch (e) {
 				this._logService.debug(`RunInTerminalTool: Threw exception`);

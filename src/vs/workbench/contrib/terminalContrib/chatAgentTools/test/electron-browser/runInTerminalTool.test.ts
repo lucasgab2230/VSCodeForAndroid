@@ -929,10 +929,10 @@ suite('RunInTerminalTool', () => {
 			let terminalDisposed = false;
 			mockTerminal.dispose = () => { terminalDisposed = true; };
 
-			runInTerminalTool.sessionTerminalAssociations.set(sessionId, {
+			runInTerminalTool.sessionTerminalAssociations.set(sessionId, [{
 				instance: mockTerminal,
 				shellIntegrationQuality: ShellIntegrationQuality.None
-			});
+			}]);
 
 			ok(runInTerminalTool.sessionTerminalAssociations.has(sessionId), 'Terminal association should exist before disposal');
 
@@ -961,14 +961,14 @@ suite('RunInTerminalTool', () => {
 			mockTerminal1.dispose = () => { terminal1Disposed = true; };
 			mockTerminal2.dispose = () => { terminal2Disposed = true; };
 
-			runInTerminalTool.sessionTerminalAssociations.set(sessionId1, {
+			runInTerminalTool.sessionTerminalAssociations.set(sessionId1, [{
 				instance: mockTerminal1,
 				shellIntegrationQuality: ShellIntegrationQuality.None
-			});
-			runInTerminalTool.sessionTerminalAssociations.set(sessionId2, {
+			}]);
+			runInTerminalTool.sessionTerminalAssociations.set(sessionId2, [{
 				instance: mockTerminal2,
 				shellIntegrationQuality: ShellIntegrationQuality.None
-			});
+			}]);
 
 			ok(runInTerminalTool.sessionTerminalAssociations.has(sessionId1), 'Session 1 terminal association should exist');
 			ok(runInTerminalTool.sessionTerminalAssociations.has(sessionId2), 'Session 2 terminal association should exist');

@@ -165,11 +165,13 @@ export async function getShellIntegrationInjection(
 			if (!newArgs) {
 				return { type: 'failure', reason: ShellIntegrationInjectionFailureReason.UnsupportedArgs };
 			}
+			// this is for sandboxed terminals.
 			if (shellLaunchConfig.sandboxed) {
 				shellLaunchConfig.executable = 'srt';
-				newArgs = ['bash', ...newArgs]; // Shallow clone the array to avoid setting the default array
+				newArgs = ['bash', ...newArgs];
+			} else {
+				newArgs = [...newArgs]; // Shallow clone the array to avoid setting the default array
 			}
-			newArgs = [...newArgs]; // Shallow clone the array to avoid setting the default array
 			newArgs[newArgs.length - 1] = format(newArgs[newArgs.length - 1], appRoot);
 			envMixin['VSCODE_STABLE'] = productService.quality === 'stable' ? '1' : '0';
 			return { type, newArgs, envMixin };
@@ -190,7 +192,13 @@ export async function getShellIntegrationInjection(
 			// to apply the path prefix fix always, not only for login shells (see #232291)
 			addEnvMixinPathPrefix(options, envMixin, shell);
 
-			newArgs = [...newArgs]; // Shallow clone the array to avoid setting the default array
+			// this is for sandboxed terminals.
+			if (shellLaunchConfig.sandboxed) {
+				shellLaunchConfig.executable = 'srt';
+				newArgs = ['fish', ...newArgs];
+			} else {
+				newArgs = [...newArgs]; // Shallow clone the array to avoid setting the default array
+			}
 			newArgs[newArgs.length - 1] = format(newArgs[newArgs.length - 1], appRoot);
 			return { type, newArgs, envMixin };
 		}
@@ -220,7 +228,13 @@ export async function getShellIntegrationInjection(
 			if (!newArgs) {
 				return { type: 'failure', reason: ShellIntegrationInjectionFailureReason.UnsupportedArgs };
 			}
-			newArgs = [...newArgs]; // Shallow clone the array to avoid setting the default array
+			// this is for sandboxed terminals.
+			if (shellLaunchConfig.sandboxed) {
+				shellLaunchConfig.executable = 'srt';
+				newArgs = ['zsh', ...newArgs];
+			} else {
+				newArgs = [...newArgs]; // Shallow clone the array to avoid setting the default array
+			}
 			newArgs[newArgs.length - 1] = format(newArgs[newArgs.length - 1], appRoot);
 
 			// Move .zshrc into $ZDOTDIR as the way to activate the script
