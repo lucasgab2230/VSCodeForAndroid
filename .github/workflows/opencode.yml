@@ -24,6 +24,6 @@ jobs:
         env:
           ZAI_API_KEY: ${{ secrets.ZAI_API_KEY }}
         with:
-          model: zai/glm-4.5-flash
-          # share: true
+          model: glm-4.5-flash
+          # share: trueh
           # github_token: xxxx
