@@ -1,0 +1,57 @@
+name: Daily Release
+
+on:
+  schedule:
+    - cron: '0 13 * * *'  # 1:00 PM daily
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v2
+      
+      - name: Build APK
+        working-directory: ./vscode-android
+        run: |
+          # Build the APK
+          ./gradlew assembleDebug
+      
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vscode-android-apk
+          path: vscode-android/app/build/outputs/apk/debug/app-debug.apk
+      
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Get current date for version
+          VERSION="0.1.0"
+          
+          # Create release with APK
+          gh release create "v$VERSION" \
+            --title "Release v$VERSION" \
+            --notes "Daily release - $(date '+%Y-%m-%d %H:%M:%S')" \
+            --target "$(git rev-parse HEAD)" \
+            --generate-notes \
+            --repo "$GITHUB_REPOSITORY" \
+            vscode-android/app/build/outputs/apk/debug/app-debug.apk
