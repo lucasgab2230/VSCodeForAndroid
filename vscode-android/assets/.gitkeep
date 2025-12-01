@@ -1,0 +1,28 @@
+# Placeholder for VS Code Android assets
+# Replace with actual assets when available
+
+# App Icon (1024x1024)
+# icon.png - VS Code logo on dark background
+
+# Adaptive Icon (336x336)
+# adaptive-icon.png - VS Code logo on dark background
+
+# Splash Screen (2732x2732)
+# splash.png - Dark background with VS Code logo
+
+# Splash Screen Logo (512x512)
+# splash_logo.png - White VS Code logo
+
+# Web Favicon (32x32)
+# favicon.png - VS Code logo
+
+# App Logo (512x512)
+# logo.png - VS Code logo
+
+# Android Vector Drawables
+# ic_info.xml - Info icon
+# ic_menu.xml - Menu icon
+# ic_view_module.xml - View module icon
+
+# Note: These are placeholder files.
+# Replace with actual assets before building for production.

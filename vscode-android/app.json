@@ -1,0 +1,60 @@
+{
+  "expo": {
+    "name": "VSCode Android",
+    "slug": "vscode-android",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1e1e1e"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.vscode.android"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1e1e1e"
+      },
+      "package": "com.vscode.android",
+      "permissions": [
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "INTERNET",
+        "REQUEST_INSTALL_PACKAGES"
+      ],
+      "config": {
+        "googleMaps": {
+          "apiKey": "YOUR_GOOGLE_MAPS_API_KEY"
+        }
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "name": "VS Code Android",
+      "shortName": "VSCode Android"
+    },
+    "plugins": [
+      "expo-font",
+      "expo-splash-screen",
+      "expo-constants",
+      "expo-file-system",
+      "expo-sharing",
+      "expo-document-picker",
+      "expo-image-picker",
+      "expo-clipboard"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "vscode-android-project-id"
+      }
+    }
+  }
+}
