@@ -6,6 +6,7 @@
 .agent-sessions-viewer {
 
 	flex: 1 1 auto;
+	height: 100%;
 	min-height: 0;
 
 	.monaco-list-row .force-no-twistie {
@@ -22,7 +23,16 @@
 		}
 	}
 
+	.monaco-list-row .agent-session-title-toolbar {
+		position: relative; /* for the absolute positioning of the toolbar below */
+		width: 22px;
+	}
+
 	.monaco-list-row .agent-session-title-toolbar .monaco-toolbar {
+		/* this is required because the overal height (including the padding needed for hover feedback) would push down the title otherwise */
+		position: absolute;
+		right: 0;
+		top: 0;
 		display: none;
 	}
 
@@ -31,14 +41,14 @@
 		display: block;
 	}
 
-	.monaco-list-row .agent-session-title-toolbar .monaco-toolbar .action-label {
-		padding: 0; /* limit padding top/bottom to preserve line-height per row */
-	}
-
 	.agent-session-item {
 		display: flex;
 		flex-direction: row;
 		padding: 8px;
+
+		&.archived {
+			color: var(--vscode-descriptionForeground);
+		}
 
 		.agent-session-main-col,
 		.agent-session-title-row,
